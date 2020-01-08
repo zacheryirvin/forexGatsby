@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Trading The FX`,
+    description: `Built for analysis, viewing, and decision making of currency pairs`,
+    author: `Zachery Irvin`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -25,6 +25,19 @@ module.exports = {
         theme_color: `#663399`,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+      },
+    },
+    `gatsby-plugin-emotion`,
+    {
+      resolve: "gatsby-source-newsApi",
+      options: {
+        token: "a909df399205477eb97e3e4165b1ae13",
+      },
+    },
+    {
+      resolve: "gatsby-source-priceDataApi",
+      options: {
+        access_key: "KKQHLAYSEJ5ALIPA",
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
