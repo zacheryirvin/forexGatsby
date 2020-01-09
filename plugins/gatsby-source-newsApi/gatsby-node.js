@@ -3,7 +3,8 @@ const format = require("date-fns").format
 const sub = require("date-fns").subDays
 const uuid = require("uuid/v4")
 
-const weekAgo = format(sub(new Date(), 7), "yyyy-dd-MM")
+const weekAgo = format(sub(new Date(), 14), "yyyy-dd-MM")
+console.log("Week Ago:", weekAgo)
 
 exports.sourceNodes = (
   { actions, createNodeId, createContentDigest },
@@ -11,7 +12,7 @@ exports.sourceNodes = (
 ) => {
   const { createNode } = actions
   delete configOptions.plugins
-  const apiUrl = `https://newsapi.org/v2/everything?q=stocks&from=${weekAgo}&sortBy=publishedAt&apiKey=${configOptions.token}`
+  const apiUrl = `https://newsapi.org/v2/everything?q=forex&from=${weekAgo}&sortBy=publishedAt&apiKey=${configOptions.token}`
 
   return fetch(apiUrl)
     .then(res => res.json())
