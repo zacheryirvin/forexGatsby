@@ -5,6 +5,7 @@ const useNews = () => {
     query MyQuery {
       allNewsApiPost {
         nodes {
+          id
           author
           description
           title
