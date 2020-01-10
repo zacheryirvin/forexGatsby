@@ -60,23 +60,48 @@ exports.sourceNodes = async (
   }
 
   let returnVal = []
-  for (let i = 0; i < apiUrls.length - 6; i++) {
+  // for (let i = 0; i < apiUrls.length; i++) {
+  //   const val = await Promise.all([asyncCall(apiUrls[i]), timeout(20011)])
+  //   returnVal.push(val[0])
+  // }
+
+  for (let i = 0; i < apiUrls.length - 2; i++) {
     const val = await Promise.all([asyncCall(apiUrls[i])])
-    returnVal.push(val)
+    returnVal.push(val[0])
   }
-  returnVal.forEach(x => {
-    console.log(x[0]["Meta Data"]["2. From Symbol"])
-    console.log(x[0]["Time Series FX (Daily)"]["2020-01-08"])
-  })
 
   returnVal.forEach(x => {
-    const from = x[0]["Meta Data"]["2. From Symbol"]
-    const to = x[0]["Meta Data"]["3. To Symbol"]
+    const from = x["Meta Data"]["2. From Symbol"]
+    const to = x["Meta Data"]["3. To Symbol"]
+    const prices = x["Time Series FX (Daily)"]
+    const convertedPrices = []
+    for (let [key, value] of Object.entries(prices)) {
+      const newValue = {
+        date: key,
+        ohlc: {
+          open: Number(value["1. open"]),
+          high: Number(value["2. high"]),
+          low: Number(value["3. low"]),
+          close: Number(value["4. close"]),
+        },
+      }
+      convertedPrices.push(newValue)
+    }
+
     const id = createNodeId(uuid())
     const nodeContent = JSON.stringify(x)
     const newNode = {
       id,
       pair: `${from} / ${to}`,
+      prices: convertedPrices,
+      parent: null,
+      children: [],
+      internal: {
+        type: "ForexApiData",
+        content: nodeContent,
+        contentDigest: createContentDigest(x),
+      },
     }
+    createNode(newNode)
   })
 }

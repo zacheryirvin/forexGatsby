@@ -35,7 +35,7 @@ const HomePageNewsPreview = () => {
     >
       {data.map(x => {
         return (
-          <Post>
+          <Post key={x.id}>
             <h3>{x.title}</h3>
             <h4>{x.author}</h4>
             <p>{x.description}</p>
